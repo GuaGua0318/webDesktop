@@ -1,0 +1,54 @@
+
+//导航列表
+export const navList = [
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'百度',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'腾讯',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'网易',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'字节跳动',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'快手',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'百度',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'腾讯',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'网易',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'字节跳动',
+    url:'https://www.baidu.com'
+  },
+  {
+    img:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    txt:'快手',
+    url:'https://www.baidu.com'
+  }
+]

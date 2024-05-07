@@ -3,7 +3,6 @@
     <img class="img" :src="`../src/assets/v${props.bgCount}.jpg`" alt="">
     
   </div>
-  {{ props.bgCount }}
 </template>
 
 <script setup>
