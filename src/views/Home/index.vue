@@ -3,6 +3,7 @@
 <div>
   <button @click="toggleBg">切换壁纸</button>
 </div>
+<Searchs></Searchs>
 <el-row>
     <el-col :span="10" :offset="1"> <Navigation></Navigation></el-col>
     <el-col :span="10" :offset="2"> <Todo></Todo></el-col>
@@ -14,7 +15,9 @@
 import Bg from "../../components/Bg/index.vue";
 import Navigation from "../../components/Navigation/index.vue";
 import Todo from "../../components/Todo/index.vue";
+import Searchs from "../../components/Search/index.vue";
 import { ref } from "vue";
+import { Search } from '@element-plus/icons-vue';
 
 const bgCount = ref(1)
  
