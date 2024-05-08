@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
-    <img class="img" :src="`../src/assets/v${props.bgCount}.jpg`" alt="">
-    
+    <div v-if="props.bgCount === 0" class="img" style="background-color: #333;"></div>
+    <img v-else class="img" :src="`../src/assets/v${props.bgCount}.jpg`" alt="">
   </div>
 </template>
 
