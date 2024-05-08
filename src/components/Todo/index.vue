@@ -1,27 +1,38 @@
 <template>
   <div class="box">
-    <el-card style="background-color: rgba(255, 255, 255, 0.5);">
+    <el-card class="card" style="background-color: rgba(255, 255, 255, 0.5);">
       <template #header>
         <div class="card-header">
           <span>今日待办事项</span>
           <el-button type="primary" class="addBtn" @click="dialogVisible = true">添加事项</el-button>
         </div>
       </template>
-      <div class="item" v-for="item in itemList">
-        <span v-if="item.date && item.date === dayjs().format('YYYY-MM-DD')" style="text-decoration-line: line-through;">{{ item.item }}</span>
-        <span v-else>{{ item.item }}</span>
-        <div class="btns">
-          <el-tag type="primary" style="margin-right: 5px;">待办次数：{{ item.duration }}</el-tag>
-          <el-tag v-if="(item.date && item.date === dayjs().format('YYYY-MM-DD')) || item.duration < 1" type="info" style="margin-right: 5px;cursor: pointer;" @click="() => itemProhibit()">完成</el-tag> 
-          <el-tag v-else type="success" style="margin-right: 5px;cursor: pointer;" @click="() => okItem(item.id)">完成</el-tag>
-          <el-popconfirm title="确定要删除吗？" @confirm="() => deleteItem(item.id)">
-            <template #reference>
-              <el-tag type="danger" style="cursor: pointer;">删除</el-tag>
-            </template>
-          </el-popconfirm>
+      <div class="cardBody">
 
+        <div v-if="itemList && itemList.length > 0" class="item" v-for="item in itemList">
+          <span v-if="item.date && item.date === dayjs().format('YYYY-MM-DD')"
+            style="text-decoration-line: line-through;">{{
+            item.item }}</span>
+          <span v-else>{{ item.item }}</span>
+          <div class="btns">
+            <el-tag type="primary" style="margin-right: 5px;">待办次数：{{ item.duration }}</el-tag>
+            <el-tag v-if="(item.date && item.date === dayjs().format('YYYY-MM-DD')) || item.duration < 1" type="info"
+              style="margin-right: 5px;cursor: pointer;" @click="() => itemProhibit()">完成</el-tag>
+            <el-tag v-else type="success" style="margin-right: 5px;cursor: pointer;"
+              @click="() => okItem(item.id)">完成</el-tag>
+            <el-popconfirm title="确定要删除吗？" @confirm="() => deleteItem(item.id)">
+              <template #reference>
+                <el-tag type="danger" style="cursor: pointer;">删除</el-tag>
+              </template>
+            </el-popconfirm>
+
+          </div>
         </div>
+        <el-empty v-else :image-size="100" description=" ">
+        <el-tag type="warning">暂无待办事项</el-tag>
+        </el-empty>
       </div>
+
     </el-card>
   </div>
 
@@ -86,7 +97,7 @@ const itemProhibit = () => {
 const formSize = ref<ComponentSize>('default')
 const ruleFormRef = ref<FormInstance>()
 const itemList = ref(JSON.parse(<string>window.localStorage.getItem('itemList')))
-const ruleForm = reactive<RuleForm>({
+var ruleForm = reactive<RuleForm>({
   item: '',
   priority: 1,
   duration: 1,
@@ -123,12 +134,21 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       }
       itemList.value = JSON.parse(<string>window.localStorage.getItem('itemList'))
       dialogVisible.value = false;
+      ruleForm = reactive<RuleForm>({
+        item: '',
+        priority: 1,
+        duration: 1,
+      })
       open2()
-
     } else {
       console.log('error submit!', fields)
     }
   })
+}
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
 }
 
 //删除item
@@ -160,6 +180,20 @@ const okItem = (id: number) => {
 
 <style scoped>
 .box {
+  .card {
+
+    .cardBody {
+      max-height: 70vh;
+      min-height: 400px;
+      overflow-y: auto;
+    }
+
+    .cardBody::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+
   .item {
     height: 40px;
     line-height: 40px;

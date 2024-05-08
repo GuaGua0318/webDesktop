@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="search">
-      <el-input v-model="input1" @input="search" style="width: 240px" size="large" placeholder="Please Input" :suffix-icon="Search" clearable />
+      <el-input v-model="input1" @input="search" style="width: 240px" size="large" placeholder="请输入内容" :suffix-icon="Search" clearable />
     </div>
     <div class="itemBox">
       <div class="item" v-for="item in navListCopy" @click="() => goLink(item.url)">
@@ -35,8 +35,13 @@ const search = (val:string) => {
 <style scoped>
 .bg {
   padding-top: 10px;
-  height: 80vh;
+  max-height: 80vh;
+  min-height: 400px;
+  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   .search{
     text-align: center;
   }
@@ -45,6 +50,7 @@ const search = (val:string) => {
     flex-wrap: wrap;
     justify-content: flex-start;
     margin-top: 10px;
+
     .item{
       flex: 1;
       border: 1px solid pink;
@@ -65,5 +71,8 @@ const search = (val:string) => {
       margin-right: 0;
     }
   }
+}
+.bg::-webkit-scrollbar{
+  display: none;
 }
 </style>
