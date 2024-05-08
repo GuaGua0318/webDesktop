@@ -127,7 +127,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       } else {
         const itemList = JSON.parse(<string>window.localStorage.getItem('itemList'))
         itemList.push({ item, priority, duration, id: new Date().getTime() })
-        itemList.sort((a, b) => {
+        itemList.sort((a:any, b:any) => {
           b.priority - a.priority
         })
         window.localStorage.setItem('itemList', JSON.stringify(itemList))
@@ -153,7 +153,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 //删除item
 const deleteItem = (id: number) => {
-  const value = JSON.parse(<string>window.localStorage.getItem('itemList')).filter((item) => item.id !== id);
+  const value = JSON.parse(<string>window.localStorage.getItem('itemList')).filter((item:any) => item.id !== id);
   window.localStorage.removeItem('itemList');
   window.localStorage.setItem('itemList', JSON.stringify(value));
   itemList.value = JSON.parse(<string>window.localStorage.getItem('itemList'))

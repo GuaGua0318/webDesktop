@@ -27,7 +27,7 @@ const goLink = (url:string) => {
 }
 //搜索
 const search = (val:string) => {
-  navListCopy = navList.filter((item) => item.txt.includes(val))
+  navListCopy = <any>navList.filter((item) => item.txt.includes(val))
 }
 
 </script>
