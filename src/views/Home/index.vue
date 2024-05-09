@@ -22,10 +22,25 @@
   </el-space>
 </div>
 
-<el-row>
+<el-tabs
+    v-model="activeName"
+    type="card"
+    class="demo-tabs"
+    @tab-click="handleClick"
+  >
+    <el-tab-pane label="User" name="first">
+      <el-row>
     <el-col :span="10" :offset="1"> <Navigation></Navigation></el-col>
     <el-col :span="10" :offset="2"> <Todo></Todo></el-col>
   </el-row>
+    </el-tab-pane>
+    <el-tab-pane label="小记" name="second">
+      <Note></Note>
+    </el-tab-pane>
+    <el-tab-pane label="Role" name="third">Role</el-tab-pane>
+    <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
+  </el-tabs>
+
 
 </template>
 
@@ -34,6 +49,7 @@ import Bg from "../../components/Bg/index.vue";
 import Navigation from "../../components/Navigation/index.vue";
 import Todo from "../../components/Todo/index.vue";
 import Searchs from "../../components/Search/index.vue";
+import Note from "../Note/index.vue";
 import { ref } from "vue";
 import { Search,Refresh } from '@element-plus/icons-vue';
 import { useDark, useToggle } from '@vueuse/core';

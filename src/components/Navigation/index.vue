@@ -35,7 +35,7 @@ const search = (val:string) => {
 <style scoped>
 .bg {
   padding-top: 10px;
-  max-height: 80vh;
+  max-height: 70vh;
   min-height: 400px;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.2);
