@@ -1,3 +1,4 @@
+import { ElMessage } from "element-plus";
 /**
  * 打开数据库
  * @param {object} dbName 数据库的名字
@@ -123,7 +124,7 @@ export function getDataByKey(db, storeName, key) {
  * @param {string} storeName 仓库名称
  * @param {object} id 主键值
  */
-function deleteDB(db, storeName, id) {
+export function deleteDB(db, storeName, id) {
   var request = db
     .transaction([storeName], "readwrite")
     .objectStore(storeName)
@@ -135,5 +136,27 @@ function deleteDB(db, storeName, id) {
 
   request.onerror = function () {
     console.log("数据删除失败");
+  };
+}
+
+
+/**
+ * 更新数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {object} data 数据
+ */
+export function updateDB(db, storeName, data) {
+  var request = db
+    .transaction([storeName], "readwrite") // 事务对象
+    .objectStore(storeName) // 仓库对象
+    .put(data);
+
+  request.onsuccess = function () {
+    ElMessage.success("更新成功");
+  };
+
+  request.onerror = function () {
+    ElMessage.success("更新失败");
   };
 }

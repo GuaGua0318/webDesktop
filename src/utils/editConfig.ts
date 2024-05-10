@@ -1,9 +1,12 @@
 //富文本编辑器的配置
 
 export const config = {
-  height: "60vh", //高度
+  height: "58vh", //高度
+  heightMax:"58vh",
+  // heightMin:"48vh",
   charCounterCount: false, //字符计算器
   fileUpload: false,
+  borderRadius:'0',
   toolbarButtons: {
     moreText: {
       buttons: [
