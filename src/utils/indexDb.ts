@@ -57,11 +57,11 @@ export function addData(db: any, storeName, data) {
     .add(data);
 
   request.onsuccess = function (event) {
-    console.log("数据写入成功");
+    ElMessage.success("添加成功");
   };
 
   request.onerror = function (event) {
-    console.log("数据写入失败");
+    ElMessage.error("添加失败");
   };
 }
 
@@ -131,11 +131,11 @@ export function deleteDB(db, storeName, id) {
     .delete(id);
 
   request.onsuccess = function () {
-    console.log("数据删除成功");
+    ElMessage.success("删除成功");
   };
 
   request.onerror = function () {
-    console.log("数据删除失败");
+    ElMessage.error("删除失败");
   };
 }
 
@@ -157,6 +157,6 @@ export function updateDB(db, storeName, data) {
   };
 
   request.onerror = function () {
-    ElMessage.success("更新失败");
+    ElMessage.error("更新失败");
   };
 }

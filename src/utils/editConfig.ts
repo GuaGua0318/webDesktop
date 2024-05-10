@@ -1,6 +1,6 @@
 //富文本编辑器的配置
 
-export const config = {
+export const editConfig = {
   height: "58vh", //高度
   heightMax:"58vh",
   // heightMin:"48vh",

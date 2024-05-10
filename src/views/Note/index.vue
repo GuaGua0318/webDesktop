@@ -12,7 +12,7 @@
           </div>
         </template>
         <div class="cardBody" style="color: #333;">
-          <div class="item" v-for="(item, index) in noteList" style="cursor: pointer;"
+          <div class="item" v-for="(item, index) in noteList" :style="{'boxShadow':item.selectedLeft ? '1px -2px 6px #333' : ''}"
             @click="() => getNoteDetail(item.noteId, item)" @contextmenu.prevent="(e) => rightMenu(e, item.noteId)">
             <div v-html="item.content" style="height: 40px;overflow: hidden;">
 
@@ -23,6 +23,7 @@
               <p>标记</p>
               <p @click="() => deleteNote(item.noteId)">删除</p>
             </div>
+            <div class="status" v-show="item.status"></div>
           </div>
         </div>
 
@@ -38,11 +39,11 @@
 
 <script setup lang="ts">
 import { Edit } from '@element-plus/icons-vue';
-import { config } from '../../utils/editConfig'
+import { editConfig } from '../../utils/editConfig'
 import FroalaEditor from 'froala-editor';
 import { ref, reactive, onMounted } from 'vue';
 import { useMouseInElement } from '@vueuse/core'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { openDB, addData, cursorGetData, getDataByKey, deleteDB, updateDB } from '../../utils/indexDb';
 
 interface editContent {
@@ -67,7 +68,28 @@ const coordinate = ref<coordinate>({
   overflow: 'visible'
 })
 const editNote = ref<any>(null)  //保存正在操作的note
+const saveStatus = ref<boolean>(false)  //判断是否保存 true为未保存
+const config = editConfig
 
+//富文本事件
+config.events = {
+  //监听内容变更
+  'contentChanged': function () {
+    console.log('zzzzzz', editContent.value, editNote.value.content)
+
+    if (editContent.value !== editNote.value.content) {
+      editNote.value.status = true;
+      saveStatus.value = true;
+      for (let i = 0; i < noteList.value.length; i++) {
+        let obj = noteList.value[i]
+        if (obj.noteId === editNote.value.noteId) {
+          noteList.value[i].status = true
+        }
+      }
+    }
+    console.log(editNote)
+  }
+}
 onMounted(async () => {
   document.addEventListener('click', function () {
     var menus = document.querySelectorAll('.menu');
@@ -81,22 +103,58 @@ onMounted(async () => {
   const noteArr = <[]>await cursorGetData(desktop, 'note')
   for (let i = 0; i < noteArr.length; i++) {
     noteArr[i].selected = false;
+    noteArr[i].selectedLeft = false;
+    noteArr[i].status = false;
   }
   noteList.value = noteArr
 })
 
-//查询单项note详情
-const getNoteDetail = async (id: number, note: any) => {
+const getNote = async (id: number, note: any) => {
   editNote.value = note;
   const desktop = await openDB('desktop');
   const test = <editContent>await getDataByKey(desktop, 'note', id)
   editContent.value = test.content;
+  const arr = noteList.value;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].noteId === id) {
+      arr[i].selectedLeft = true;
+    } else {
+      arr[i].selectedLeft = false;
+    }
+  }
+}
+
+//查询单项note详情
+const getNoteDetail = async (id: number, note: any) => {
+  if (saveStatus.value) {
+    ElMessageBox.confirm(
+      '您修改了内容还未保存确认，请谨慎操作',
+      {
+        confirmButtonText: '一意孤行',
+        cancelButtonText: '后悔了',
+        type: 'warning',
+      }
+    )
+      .then(() => {
+        if (editNote.value) {
+          editNote.value.status = false;
+        }
+        saveStatus.value = false;
+        getNote(id, note)
+        noteList.value.shift()
+      })
+  } else {
+    getNote(id, note)
+  }
+
 }
 
 //点击添加时候在内存中添加一条note，不保存退出即清除
 const addEdit = () => {
+  editNote.value = null;
   editContent.value = '';
-  noteList.value.unshift({ content: '无内容或未保存' })
+  noteList.value.unshift({ content: '无内容或未保存', selected: true, status: true })
+  saveStatus.value = true;
 }
 
 //鼠标右击菜单
@@ -124,6 +182,7 @@ const deleteNote = async (id: number) => {
   const noteArr = <[]>await cursorGetData(desktop, 'note')
   for (let i = 0; i < noteArr.length; i++) {
     noteArr[i].selected = false;
+    noteArr[i].selectedLeft = false;
   }
   noteList.value = noteArr
   editContent.value = '';
@@ -142,14 +201,20 @@ FroalaEditor.RegisterCommand('save', {
   //保存小记
   callback: async function () {
     const desktop = await openDB('desktop')
-    if (editNote.value) {
-      console.log('----edit1', editNote.value)
-      const value = { ...editNote.value, content: editContent.value }
+    if (editNote.value !== null) {
+      const value = { noteId: editNote.value.noteId, content: editContent.value }
       await updateDB(desktop, 'note', value)
+
     } else {
-      console.log('----edit1=2222', editNote)
       await addData(desktop, 'note', { content: editContent.value })
+      const noteArr = await cursorGetData(desktop, 'note')
+      editContent.value = noteArr[noteArr.length - 1].content;
+      editNote.value = noteArr[noteArr.length - 1];
     }
+    if (editNote.value) {
+      editNote.value.status = false;
+    }
+    saveStatus.value = false;
     const noteArr = await cursorGetData(desktop, 'note')
     noteList.value = noteArr
   }
@@ -169,6 +234,18 @@ FroalaEditor.RegisterCommand('save', {
     padding: 0 8px 0 8px;
     margin-bottom: 5px;
     position: relative;
+    cursor: pointer;
+
+    .status {
+      width: 6px;
+      height: 6px;
+      background-color: red;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      margin-top: -3px;
+      border-radius: 50%;
+    }
 
     .menu {
       width: 100px;
